@@ -4,7 +4,7 @@ const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-exp",
+    model: "gemini-1.5-pro-latest",
 });
 
 const generationConfig = {
@@ -15,14 +15,20 @@ const generationConfig = {
     responseMimeType: "text/plain",
 };
 
-async function run(prompt) {
-    const chatSession = model.startChat({
-        generationConfig,
-        history: [],
-    });
+const run = async (prompt) => {
+    try {
+        const chatSession = await model.startChat({
+            generationConfig,
+            history: [],
+        });
 
-    const result = await chatSession.sendMessage(prompt);
-    return result.response.text();
+        const result = await chatSession.sendMessage(prompt);
+        return result.response.text();
+    } catch (error) {
+        console.error("Gemini Error: ", error);
+        return "Sorry chellam, AI is busy now. Try again later.";
+    }
 }
+
 
 export default run;

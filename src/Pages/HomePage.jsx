@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { dataContext } from '../context/VoiceContext';
+import VoiceModeBtn from '../components/VoiceModeBtn';
 
 const HomePage = () => {
 
@@ -27,13 +28,7 @@ const HomePage = () => {
                 <div className='text-center md:text-left md:w-1/2 space-y-5'>
                     <h1 className='text-4xl md:text-5xl mt-4 md:mt-0 leading-tight font-bold'>Get ready for the <br /> new era of <span className='text-purple-700'>JARVIS AI</span></h1>
                     <p className='text-base text-gray-400'>Discover news like never before with instant updates and voice-assisted features. Stay ahead, stay connected!</p>
-                    <div className='flex items-center flex-col space-x-3 mt-2 relative'>
-                        <button onClick={() => {
-                            if (recognition && recognition.state !== 'started') { recognition.start(); }
-                        }} className="rounded-full cursor-pointer bg-purple-600 hover:bg-purple-700 inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" className='px-2 py-2 w-28 h-28 rounded-full '><path fill="currentColor" d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3m7 9c0 3.53-2.61 6.44-6 6.93V21h-2v-3.07c-3.39-.49-6-3.4-6-6.93h2a5 5 0 0 0 5 5a5 5 0 0 0 5-5z" /></svg>
-                        </button>
-                    </div>
+                    <VoiceModeBtn />
                 </div>
                 <div className='md:w-1/2 flex justify-center'>
                     <img src="/assets/img/AI robot.png" alt="ai robot" className='w-72 md:ml- md:w-[350px] drop-shadow-lg shadow-blue-500/50' />

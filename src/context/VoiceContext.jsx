@@ -6,7 +6,8 @@ export const dataContext = createContext();
 
 const VoiceContext = ({ children }) => {
 
-    const [prompt, setPrompt] = useState("Listening...");
+    const [userSpeech, setUserSpeech] = useState(""); // 🗣️ User speech
+    const [aiResponseText, setAiResponseText] = useState(""); // 🤖 AI reply
     const navigate = useNavigate();
 
     const speak = (text) => {
@@ -19,35 +20,35 @@ const VoiceContext = ({ children }) => {
     }
 
     const aiResponse = async (prompt) => {
-        const text = await run(prompt)
-        setPrompt(text)
+        const text = await run(prompt);
+        setAiResponseText(text); // AI response
         speak(text);
+        navigate("/ai-response");
     };
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
+
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
 
     recognition.onresult = (e) => {
         const currentIndex = e.resultIndex;
         const transcript = e.results[currentIndex][0].transcript;
-        console.log("Use Said: ", transcript);
+        console.log("User Said: ", transcript);
 
-        setPrompt(transcript);
+        setUserSpeech(transcript); // store user speech
         aiResponse(transcript);
-
-        setTimeout(() => {
-            navigate("/ai-response");
-        }, 10);
+        recognition.stop();
     }
 
-    const value = { recognition, prompt, setPrompt };
+    const value = { recognition, userSpeech, aiResponseText };
 
     return (
-        <div>
-            <dataContext.Provider value={value}>
-                {children}
-            </dataContext.Provider>
-        </div>
+        <dataContext.Provider value={value}>
+            {children}
+        </dataContext.Provider>
     )
 }
 
